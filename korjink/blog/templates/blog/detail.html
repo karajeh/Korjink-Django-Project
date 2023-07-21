@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {{ post.title }} | {% endblock %}
+
+{% block content %}
+
+<section class="hero ">
+    <div class="hero-body">
+        <div class="container">
+            <section class="section">
+                <div class="columns">
+                    <div class="column is-8 is-offset-2">
+                        <div class="content is-medium">
+                            <h2 class="subtitle is-4">{{ post.created_at|date:"d/m/Y g:i A" }} </h2>
+                            <h1 class="title">{{ post.title }}</h1>
+                            <p><strong>{{ post.intro }}</strong></p>
+                            <p style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">{{ post.body }}</p>
+                            <p><small>Category: <a href= "{% url 'category_detail' post.category.slug %}"> {{post.category}} </a></small></p>
+                            <hr>
+                            <h2 class="subtitle is-4">Comments</h2>
+                            <form method="post" class="mb-6">
+
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <div class="field">
+                                    <div class="control">
+                                        <button class = "button is-success">Submit Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                                {% for comment in post.comments.all %}
+                                    <article class="media box">
+                                        <div class="media-content">
+                                            <strong>{{ comment.name }}</strong>
+                                            <small>{{ comment.created_at|date:"d/m/Y g:i A" }} </small> <br>
+                                            {{ comment.body }}
+                                        </div>
+                                    </article>
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section> 
+
+{% endblock %}
